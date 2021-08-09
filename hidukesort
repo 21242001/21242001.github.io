@@ -1,0 +1,119 @@
+#include <cstdio>
+#include <unordered_map>
+#include <string>
+#include <iostream>
+#include <regex>
+
+struct Sort {
+    std::string y1;
+    std::string y2;
+    int monthnum1;
+    int monthnum2;
+    int daynum1;
+    int daynum2;
+    std::vector<std::string> a;
+    std::string yotei;
+    //std::regex tuki(R"(([0 - 1][0 - 9])月)");
+   //std::regex niti(R"(([0 - 3][0 - 9])日)");
+    std::string all = "$0";
+    std::string month = "$1";
+    std::string day = "$2";
+    std::string text = "$3";
+    int i;
+};
+
+Sort MandD;
+void irekae(std::string yotei) {
+    
+    //std::cout << MandD.i << std::endl;
+    MandD.yotei = yotei;
+    //std::cout << MandD.yotei << std::endl;
+    std::regex hiduke(R"((\d{2})月(\d{2})日(.+?))");
+
+    MandD.a.push_back(MandD.yotei);
+    //std::cout << MandD.a[MandD.i] << std::endl;
+
+    //std::cout << "入力完了" << std::endl;
+    //std::cout << MandD.i << std::endl;
+    for (int j = 0; j < MandD.i; j++) {
+        //std::cout << "for in" << std::endl;
+        std::string x1 = regex_replace(MandD.yotei, hiduke, MandD.month);
+        MandD.monthnum1 = atoi(x1.c_str());
+        //std::cout << MandD.monthnum1 << std::endl;
+
+        std::string x2 = regex_replace(MandD.a[j], hiduke, MandD.month);
+        MandD.monthnum2 = atoi(x2.c_str());
+        //std::cout << MandD.monthnum2 << std::endl;
+
+        std::string x3 = regex_replace(MandD.yotei, hiduke, MandD.day);
+        MandD.daynum1 = atoi(x3.c_str());
+        //std::cout << MandD.daynum1 << std::endl;
+
+        std::string x4 = regex_replace(MandD.a[j], hiduke, MandD.day);
+        MandD.daynum2 = atoi(x4.c_str());
+        //std::cout << daynum2 << std::endl;
+
+        std::string x5 = regex_replace(MandD.yotei, hiduke, MandD.all);
+        //std::cout << x5 << std::endl;
+
+        std::string x6 = regex_replace(MandD.yotei, hiduke, MandD.text);
+        //std::cout << x6 << std::endl;
+
+
+        if (MandD.i != j) {
+            if (MandD.monthnum2 > MandD.monthnum1) {
+                MandD.y1 = MandD.a[MandD.i];
+                //std::cout << y1 << std::endl;
+                MandD.y2 = MandD.a[j];
+                //std::cout << y2 << std::endl;
+                MandD.a[MandD.i] = MandD.y2;
+                //std::cout << a[i] << std::endl;
+                MandD.a[j] = MandD.y1;
+                //std::cout << a[j] << std::endl;
+            }
+            if (MandD.monthnum1 == MandD.monthnum2) {
+                if (MandD.daynum2 > MandD.daynum1) {
+                    MandD.y1 = MandD.a[MandD.i];
+                    //std::cout << y1 << std::endl;
+                    MandD.y2 = MandD.a[j];
+                    //std::cout << y2 << std::endl;
+                    MandD.a[MandD.i] = MandD.y2;
+                    //std::cout << a[i] << std::endl;
+                    MandD.a[j] = MandD.y1;
+                    //std::cout << a[j] << std::endl;
+                }
+            }
+        }
+        
+    }
+
+    MandD.i++;
+    //std::cout << MandD.i << std::endl;
+}
+
+int main() {
+    std::regex hiduke(R"((\d{2})月(\d{2})日(.+?))");
+    std::string nyuryoku;
+    //配列内に予定を記入
+    MandD.i = 0;
+    //std::cout << MandD.i << std::endl;
+    while (std::cin >> nyuryoku) {
+        //std::cout << MandD.i << std::endl;
+        irekae(nyuryoku);
+    }
+
+    for (auto l = MandD.a.begin(); l != MandD.a.end(); ++l) {
+        std::cout << *l << std::endl;
+    }
+
+    /*
+    for (int k = 0; k < MandD.i; k++) {
+        std::string x9 = regex_replace(MandD.a[k], hiduke, MandD.text);
+
+        std::string x2 = regex_replace(MandD.a[k], hiduke, MandD.month);
+        MandD.monthnum2 = atoi(x2.c_str());
+        std::cout << MandD.monthnum2 << std::endl;
+    }
+    */
+    
+}
